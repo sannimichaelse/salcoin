@@ -1,0 +1,21 @@
+{
+    "apps": [{
+        "name": "salcoin",
+        "script": "./bin/index",
+        "cwd": "/var/www/salcoin",
+        "watch": true,
+        "exec_mode": "cluster",
+        "log_file": "/opt/.pm2/salcoin/logs/salcoin.log",
+        "out_file": "/opt/.pm2/salcoin/logs/salcoin.log",
+        "error_file": "/opt/.pm2/salcoin/logs/salcoin.log",
+        "merge_logs": true,
+        "log_format": ":date.color :level.blue :msg",
+        "log_date_format": "YYYY-MM-DD HH:mm Z",
+        "env": {
+            "NODE_ENV": "development"
+        },
+        "env_production": {
+            "NODE_ENV": "production"
+        }
+    }]
+}

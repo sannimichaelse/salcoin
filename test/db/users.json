@@ -1,0 +1,109 @@
+[{
+    "pkUserId": 1,
+    "firstName": "Ken",
+    "lastName": "T",
+    "photo": "",
+    "password":"123456",
+    "email": "teacherken@gmail.com",
+    "accessLevel": 1,
+    "status": 1
+}, {
+    "pkUserId": 2,
+    "firstName": "Ken",
+    "lastName": "T",
+    "photo": "",
+    "password":"123456",
+    "email": "teacherken@example.com",
+    "accessLevel": 1,
+    "status": 1
+}, {
+    "pkUserId": 3,
+    "firstName": "Joe",
+    "lastName": "T",
+    "photo": "",
+    "password":"123456",
+    "email": "teacherjoe@example.com",
+    "accessLevel": 1,
+    "status": 1
+}, {
+    "pkUserId": 4,
+    "firstName": "Jon",
+    "lastName": "S",
+    "photo": "",
+    "password":"123456",
+    "email": "studentjon@example.com",
+    "accessLevel": 2,
+    "status": 1
+}, {
+    "pkUserId": 5,
+    "firstName": "Hon",
+    "lastName": "S",
+    "photo": "",
+    "password":"123456",
+    "email": "studenthon@example.com",
+    "accessLevel": 2,
+    "status": 1
+}, {
+    "pkUserId": 6,
+    "firstName": "Com",
+    "lastName": "S 1",
+    "photo": "",
+    "password":"123456",
+    "email": "commonstudent1@gmail.com",
+    "accessLevel": 2,
+    "status": 1
+}, {
+    "pkUserId": 7,
+    "firstName": "Com",
+    "lastName": "S 2",
+    "photo": "",
+    "password":"123456",
+    "email": "commonstudent2@gmail.com",
+    "accessLevel": 2,
+    "status": 1
+}, {
+    "pkUserId": 8,
+    "firstName": "Jake",
+    "lastName": "S",
+    "photo": "",
+    "password":"123456",
+    "email": "student.only.under.teacher.ken@gmail.com",
+    "accessLevel": 2,
+    "status": 1
+}, {
+    "pkUserId": 9,
+    "firstName": "Mary",
+    "lastName": "S",
+    "photo": "",
+    "password":"123456",
+    "email": "studentmary@gmail.com",
+    "accessLevel": 2,
+    "status": 1
+}, {
+    "pkUserId": 10,
+    "firstName": "Agnes",
+    "lastName": "S",
+    "password":"123456",
+    "photo": "",
+    "email": "studentagnes@example.com",
+    "accessLevel": 2,
+    "status": 1
+}, {
+    "pkUserId": 11,
+    "firstName": "Miche",
+    "lastName": "S",
+    "photo": "",
+    "password":"123456",
+    "email": "studentmiche@example.com",
+    "accessLevel": 2,
+    "status": 1
+}, {
+    "pkUserId": 12,
+    "firstName": "Bob",
+    "lastName": "S",
+    "photo": "",
+    "password":"123456",
+    "email": "studentbob@example.com",
+    "accessLevel": 2,
+    "status": 1
+}]
