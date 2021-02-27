@@ -10,14 +10,13 @@
  */
 
 import { EntityManager, getCustomRepository, In, Transaction, TransactionManager } from 'typeorm';
-import { validate, Validator } from 'class-validator';
 import { CodeUtil } from '../util/response-codes';
 import { ConstantUtil } from '../util/constants';
 import { LoggerUtil } from '../util/logger';
 import { User } from '../entity/User';
 import { UserRepository } from '../repository/user-repository';
 import { SignupRequest, LoginRequest } from '../interface/request/user-request';
-import { UserResponse } from '../interface/response/UserResponse';
+import { LoginResponse, UserResponse } from '../interface/response/UserResponse';
 import { AuthUtil } from '../util/auth';
 
 class UserService {
@@ -74,7 +73,7 @@ class UserService {
      * @param {object} LoginRequest
      * @return {object} UserResponse
      */
-    public async login(loginRequest: LoginRequest): Promise<UserResponse> {
+    public async login(loginRequest: LoginRequest): Promise<LoginResponse> {
         const MethodName = 'Login |';
         LoggerUtil.info(MethodName, 'UserRequest :', loginRequest);
 
@@ -100,11 +99,18 @@ class UserService {
             LoggerUtil.info(MethodName, 'User found |', CodeUtil.RETRIEVE_USER_SUCCESS);
             LoggerUtil.info(MethodName, 'Login Success |', CodeUtil.LOGIN_SUCCESS);
 
+            const token = AuthUtil.generateAuthToken({
+                id: result.id,
+                email: result.email,
+                status: result.status
+            });
+
             return {
                 message: 'Authentication successful',
                 code: CodeUtil.HTTP_STATUS_CODE_OK,
                 status: 'success',
-                data: result
+                data: result,
+                token
             };
 
         } catch (error) {

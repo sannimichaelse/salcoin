@@ -12,6 +12,7 @@ import * as bcrypt from 'bcrypt';
 import { ConstantUtil } from './constants';
 import { LoggerUtil } from './logger';
 import { AuthUtilResponse } from '../interface/response/AuthUtilResponse';
+import { reject } from 'lodash';
 
 export class AuthUtil {
 
@@ -36,7 +37,6 @@ export class AuthUtil {
             return null;
         }
 
-        // Hash password
         try {
             return bcrypt.hashSync(password, ConstantUtil.PASSWORD_SALT_ROUNDS);
         } catch (error) {
@@ -71,30 +71,16 @@ export class AuthUtil {
      * @param {object} payload
      * @return {string} token
      */
-    public static async generateAuthToken(payload: any): Promise<string> {
+    public static generateAuthToken(payload: any): string {
         const MethodName = 'GenerateAuthToken |';
         LoggerUtil.info(MethodName, 'payload :', payload);
 
         if (!payload) {
-            return;
+            return null;
         }
 
-        return new Promise((resolve) => {
-            const options = {
-                algorithm: 'HS256',
-                expiresIn: ConstantUtil.DEFAULT_AUTH_EXPIRATION
-            };
-            jwt.sign(payload, ConstantUtil.JWT_AUTH_SECRET_KEY, options, (error, token) => {
-                LoggerUtil.info(MethodName, 'error :', error, '| token :', token);
-                if (error) {
-                    return resolve('');
-                }
-
-                return resolve(token);
-            });
-        }).then((response: string) => {
-            return response;
-        });
+        const token = jwt.sign(payload, ConstantUtil.JWT_AUTH_SECRET_KEY, { expiresIn: '1h' });
+        return token;
     }
 
     /**
@@ -102,26 +88,25 @@ export class AuthUtil {
      * @param {string} token
      * @return {object | null} AuthUtilResponse
      */
-    public static async verifyToken(token: string, secretKey: string): Promise<AuthUtilResponse> {
+    public static async verifyToken(token: string): Promise<any> {
+        const secretKey = ConstantUtil.JWT_AUTH_SECRET_KEY;
         const MethodName = 'VerifyToken |';
-        // LoggerUtil.info(MethodName, 'token :', token, '| secretKey :', secretKey);
-        // LoggerUtil.info(MethodName);
+        LoggerUtil.info(MethodName, 'token :', token, '| secretKey :', secretKey);
 
         if (!token) {
-            return;
+            return null;
         }
 
         return new Promise((resolve) => {
             jwt.verify(token, secretKey, (error, decoded: AuthUtilResponse) => {
-                // LoggerUtil.info(MethodName, 'error :', error, '| decoded :', decoded);
                 if (error) {
-                    return resolve('j');
+                    LoggerUtil.info(MethodName, 'error :', error, '| decoded :', decoded);
+                    return reject(error);
                 }
 
+                LoggerUtil.info(MethodName, ' decoded :', decoded);
                 return resolve(decoded);
             });
-        }).then((response: AuthUtilResponse | null) => {
-            return response;
         });
     }
 

@@ -89,12 +89,12 @@ export class Server {
             ],
         });
 
-        // Error handlers
-        this.app.use(appErrorHandler);
-        this.app.use(genericErrorHandler);
+        // // Error handlers
+        // this.app.use(appErrorHandler);
+        // this.app.use(genericErrorHandler);
 
-        // Not found
-        this.app.use(notFound);
+        // // Not found
+        // this.app.use(notFound);
         return true;
     }
 
