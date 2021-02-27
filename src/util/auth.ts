@@ -9,10 +9,10 @@
  */
 import * as jwt from 'jsonwebtoken';
 import * as bcrypt from 'bcrypt';
+import { SignOptions } from 'jsonwebtoken';
 import { ConstantUtil } from './constants';
 import { LoggerUtil } from './logger';
 import { AuthUtilResponse } from '../interface/response/AuthUtilResponse';
-import { reject } from 'lodash';
 
 export class AuthUtil {
 
@@ -79,14 +79,19 @@ export class AuthUtil {
             return null;
         }
 
-        const token = jwt.sign(payload, ConstantUtil.JWT_AUTH_SECRET_KEY, { expiresIn: '1h' });
+        const options: SignOptions = {
+            algorithm: 'HS256',
+            expiresIn: ConstantUtil.DEFAULT_AUTH_EXPIRATION
+        };
+
+        const token = jwt.sign(payload, ConstantUtil.JWT_AUTH_SECRET_KEY, options);
         return token;
     }
 
     /**
      * Verify Token
      * @param {string} token
-     * @return {object | null} AuthUtilResponse
+     * @return {object | null}
      */
     public static async verifyToken(token: string): Promise<any> {
         const secretKey = ConstantUtil.JWT_AUTH_SECRET_KEY;
@@ -97,7 +102,7 @@ export class AuthUtil {
             return null;
         }
 
-        return new Promise((resolve) => {
+        return new Promise((resolve, reject) => {
             jwt.verify(token, secretKey, (error, decoded: AuthUtilResponse) => {
                 if (error) {
                     LoggerUtil.info(MethodName, 'error :', error, '| decoded :', decoded);
