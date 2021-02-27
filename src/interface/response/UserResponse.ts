@@ -9,7 +9,7 @@
  */
 
 import { User } from '../../entity/User';
-import { Response } from '.';
+import { Response } from './Index';
 
 export interface UserResponse extends Response {
     data?: User;

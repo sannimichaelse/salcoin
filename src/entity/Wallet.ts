@@ -10,8 +10,6 @@
 
 import { Column, ManyToOne, CreateDateColumn, Entity, Generated, Index, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { IsDate, IsEmail, IsIn, IsInt, IsNumber, IsOptional, IsString, IsUUID, MaxLength, MinLength } from 'class-validator';
-import { User } from './User';
-import { Currencies } from './Currencies';
 
 @Entity('wallet')
 @Index('unq_wallet_address', ['address'], { unique: true })

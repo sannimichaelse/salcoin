@@ -30,10 +30,6 @@ export const createDbConnection = async function (dropSchema?: boolean) {
         entities: [
             User, Wallet, Transaction, TransactionTypes, Currencies
         ],
-        // migrations: ['migration/*.js'],
-        // cli: {
-        //     migrationsDir: 'migration'
-        // },
         synchronize: true,
     });
 };

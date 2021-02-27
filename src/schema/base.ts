@@ -1,7 +1,7 @@
 import { Request } from 'express';
 import { Schema } from 'joi';
 
-export default class BaseMiddleware {
+export default class SchemaValidator {
     request: Request;
     schema: Schema;
 

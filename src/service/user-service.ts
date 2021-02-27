@@ -15,7 +15,7 @@ import { ConstantUtil } from '../util/constants';
 import { LoggerUtil } from '../util/logger';
 import { User } from '../entity/User';
 import { UserRepository } from '../repository/user-repository';
-import { SignupRequest, LoginRequest } from '../interface/request/user-request';
+import { SignupRequest, LoginRequest } from '../interface/request/User';
 import { LoginResponse, UserResponse } from '../interface/response/UserResponse';
 import { AuthUtil } from '../util/auth';
 

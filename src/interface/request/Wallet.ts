@@ -1,6 +1,6 @@
 /**
  *
- * User Request
+ * WalletRequest
  *
  * * * * * * * * * * * * * * * * *
  * @author: Sanni Michael Tomiwa.   *
@@ -11,16 +11,8 @@ import { IsDate, IsEmail, IsIn, IsInt, IsOptional, IsString, MaxLength, MinLengt
 
 export class WalletRequest {
   @IsEmail()
-  email: string;
+  currency: string;
 
-  @MaxLength(10)
-  password: string;
-
-  @IsString()
-  @MaxLength(512)
-  name: string;
-
-  @IsString()
   @MaxLength(1000)
-  description: string;
+  amount: number;
 }

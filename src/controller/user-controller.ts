@@ -11,7 +11,7 @@
 
 import { Body, BodyParam, ContentType, Get, JsonController, Param, Post, Put, Res, UseBefore } from 'routing-controllers';
 import UserService from '../service/user-service';
-import { LoginRequest, SignupRequest } from '../interface/request/user-request';
+import { LoginRequest, SignupRequest } from '../interface/request/User';
 import { Response } from 'express';
 import {
     validateSignupMiddleware,

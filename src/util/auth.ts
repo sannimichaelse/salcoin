@@ -12,7 +12,6 @@ import * as bcrypt from 'bcrypt';
 import { SignOptions } from 'jsonwebtoken';
 import { ConstantUtil } from './constants';
 import { LoggerUtil } from './logger';
-import { AuthUtilResponse } from '../interface/response/AuthUtilResponse';
 
 export class AuthUtil {
 
@@ -103,7 +102,7 @@ export class AuthUtil {
         }
 
         return new Promise((resolve, reject) => {
-            jwt.verify(token, secretKey, (error, decoded: AuthUtilResponse) => {
+            jwt.verify(token, secretKey, (error, decoded) => {
                 if (error) {
                     LoggerUtil.info(MethodName, 'error :', error, '| decoded :', decoded);
                     return reject(error);

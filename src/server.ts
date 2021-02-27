@@ -19,6 +19,7 @@ import { createDbConnection } from './config/db/db-provider';
 import { LoggerUtil } from './util/logger';
 import { UserController } from './controller/user-controller';
 import { appErrorHandler, genericErrorHandler, notFound } from './middleware/error-middleware';
+import { WalletController } from './controller/wallet-controller';
 
 export class Server {
 
@@ -42,6 +43,7 @@ export class Server {
             await createDbConnection();
             LoggerUtil.info('Success creating DB connection');
         } catch (error) {
+            console.log(error);
             LoggerUtil.error('Error creating DB connection | error :', error);
             return false;
         }
@@ -86,6 +88,7 @@ export class Server {
             routePrefix: '/api',
             controllers: [
                 UserController,
+                WalletController
             ],
         });
 
