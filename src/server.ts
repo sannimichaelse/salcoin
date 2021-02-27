@@ -10,20 +10,15 @@
 
 import * as compression from 'compression';
 import * as express from 'express';
-import * as favicon from 'serve-favicon';
 import * as helmet from 'helmet';
 import * as http from 'http';
-import * as path from 'path';
+import * as bodyParser from 'body-parser';
 import { useExpressServer } from 'routing-controllers';
 
 import { createDbConnection } from './config/db/db-provider';
-
-import { AuthUtil } from './util/auth';
-import { CodeUtil } from './util/response-codes';
-import { CommonUtil } from './util/common';
-import { ConstantUtil } from './util/constants';
 import { LoggerUtil } from './util/logger';
 import { UserController } from './controller/user-controller';
+import { appErrorHandler, genericErrorHandler, notFound } from './middleware/error-middleware';
 
 export class Server {
 
@@ -56,7 +51,7 @@ export class Server {
          * NOTE: Test only
          */
         if (process.env.ENVIRONMENT !== 'prod') {
-            await CommonUtil.populateTables();
+            // await CommonUtil.populateTables();
         }
 
         this.app = express();
@@ -72,13 +67,11 @@ export class Server {
      */
     private async config(): Promise<boolean> {
 
-        // this.app.use(favicon(path.resolve('./assets/images/favicon.png')));
-
         // Express middleware
         this.app.use(compression());
         this.app.use(helmet());
-
-        // Custom Middlewares
+        this.app.use(bodyParser.json()); // for parsing application/json
+        this.app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 
         return true;
     }
@@ -96,16 +89,12 @@ export class Server {
             ],
         });
 
-        /**
-         * Send all other requests
-         */
-        this.app.get('*', (req, res) => {
-            res.statusCode = CodeUtil.HTTP_STATUS_CODE_NOT_FOUND;
-            res.json({
-                message: 'Not Found'
-            });
-        });
+        // Error handlers
+        this.app.use(appErrorHandler);
+        this.app.use(genericErrorHandler);
 
+        // Not found
+        this.app.use(notFound);
         return true;
     }
 

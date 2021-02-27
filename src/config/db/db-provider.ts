@@ -12,6 +12,10 @@ import { createConnection } from 'typeorm';
 import { ConstantUtil } from '../../util/constants';
 import { SnakeNamingStrategy } from '../naming-strategy/snake-case';
 import { User } from '../../entity/User';
+import { Wallet } from '../../entity/Wallet';
+import { Transaction } from '../../entity/Transaction';
+import { TransactionTypes  } from '../../entity/TransactionTypes';
+import { Currencies  } from '../../entity/Currencies';
 
 export const createDbConnection = async function (dropSchema?: boolean) {
     return createConnection({
@@ -24,12 +28,12 @@ export const createDbConnection = async function (dropSchema?: boolean) {
         namingStrategy: new SnakeNamingStrategy(),
         logging: process.env.ENVIRONMENT === 'prod' ? false : 'all',
         entities: [
-            User,
+            User, Wallet, Transaction, TransactionTypes, Currencies
         ],
-
-        // Note: This is for testing purposes
-        // Always make these false in production
-        // dropSchema: process.env.ENVIRONMENT === 'prod' ? false : dropSchema,
-        synchronize: process.env.ENVIRONMENT !== 'prod',
+        // migrations: ['migration/*.js'],
+        // cli: {
+        //     migrationsDir: 'migration'
+        // },
+        synchronize: true,
     });
 };

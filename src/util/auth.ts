@@ -7,14 +7,10 @@
  * * * * * * * * * * * * * * * * *
  *
  */
-
-// import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
-
-import { CodeUtil } from './response-codes';
+import * as bcrypt from 'bcrypt';
 import { ConstantUtil } from './constants';
 import { LoggerUtil } from './logger';
-
 import { AuthUtilResponse } from '../interface/response/AuthUtilResponse';
 
 export class AuthUtil {
@@ -27,48 +23,48 @@ export class AuthUtil {
     // Module specific section
     // ----------------------------------------------------------------------
 
-    // /**
-    //  * Hash Password
-    //  * @param {string} password
-    //  * @return {string} hashedPassword
-    //  */
-    // public static async hashPassword(password: string): Promise<string | null> {
-    //     const MethodName = 'HashPassword |';
-    //     // LoggerUtil.info(MethodName, 'password :', password);
+    /**
+     * Hash Password
+     * @param {string} password
+     * @return {string} hashedPassword
+     */
+    public static hashPassword(password: string): string | null {
+        const MethodName = 'HashPassword |';
+        LoggerUtil.info(MethodName, 'password :', password);
 
-    //     if (!password) {
-    //         return null;
-    //     }
+        if (!password) {
+            return null;
+        }
 
-    //     // Hash password
-    //     try {
-    //         return await bcrypt.hashSync(password, ConstantUtil.PASSWORD_SALT_ROUNDS);
-    //     } catch (error) {
-    //         return null;
-    //     }
-    // }
+        // Hash password
+        try {
+            return bcrypt.hashSync(password, ConstantUtil.PASSWORD_SALT_ROUNDS);
+        } catch (error) {
+            return null;
+        }
+    }
 
-    // /**
-    //  * IsPasswordAndHashPasswordMatch
-    //  * @param {string} hashPassword
-    //  * @param {string} password
-    //  * @return {boolean}
-    //  */
-    // public static async isPasswordAndHashPasswordMatch(password: string, hashPassword: string): Promise<boolean> {
-    //     const MethodName = 'IsPasswordAndHashPasswordMatch |';
-    //     // LoggerUtil.info(MethodName, 'password :', password, '| hashPassword :', hashPassword);
+    /**
+     * IsPasswordAndHashPasswordMatch
+     * @param {string} hashPassword
+     * @param {string} password
+     * @return {boolean}
+     */
+    public static comparePassword(password: string, hashPassword: string): boolean {
+        const MethodName = 'IsPasswordAndHashPasswordMatch |';
+        LoggerUtil.info(MethodName, 'password :', password, '| hashPassword :', hashPassword);
 
-    //     if (!password || !hashPassword) {
-    //         return false;
-    //     }
+        if (!password || !hashPassword) {
+            return false;
+        }
 
-    //     try {
-    //         return await bcrypt.compareSync(password, hashPassword);
-    //     } catch (error) {
-    //         LoggerUtil.error(MethodName, 'error :', error);
-    //         return false;
-    //     }
-    // }
+        try {
+            return bcrypt.compareSync(password, hashPassword);
+        } catch (error) {
+            LoggerUtil.error(MethodName, 'error :', error);
+            return false;
+        }
+    }
 
     /**
      * Generate Auth Token
@@ -91,7 +87,7 @@ export class AuthUtil {
             jwt.sign(payload, ConstantUtil.JWT_AUTH_SECRET_KEY, options, (error, token) => {
                 LoggerUtil.info(MethodName, 'error :', error, '| token :', token);
                 if (error) {
-                    return resolve();
+                    return resolve('');
                 }
 
                 return resolve(token);
@@ -116,12 +112,10 @@ export class AuthUtil {
         }
 
         return new Promise((resolve) => {
-            jwt.verify(token, secretKey, {
-                algorithm: 'HS256'
-            }, (error, decoded: AuthUtilResponse) => {
+            jwt.verify(token, secretKey, (error, decoded: AuthUtilResponse) => {
                 // LoggerUtil.info(MethodName, 'error :', error, '| decoded :', decoded);
                 if (error) {
-                    return resolve();
+                    return resolve('j');
                 }
 
                 return resolve(decoded);

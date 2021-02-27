@@ -53,4 +53,9 @@ export const ConstantUtil = {
     ACTIVE: 1,
     INACTIVE: 0,
 
+    // Transaction status
+    PENDING: 'pending',
+    COMPLETED: 'completed',
+
+
 };

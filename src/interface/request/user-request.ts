@@ -8,8 +8,9 @@
  *
  */
 import { IsDate, IsEmail, IsIn, IsInt, IsOptional, IsString, MaxLength, MinLength } from 'class-validator';
+import { isString } from 'lodash';
 
-export class UserRequest {
+export class SignupRequest {
   @IsEmail()
   email: string;
 
@@ -23,4 +24,13 @@ export class UserRequest {
   @IsString()
   @MaxLength(1000)
   description: string;
+}
+
+export class LoginRequest {
+  @IsEmail()
+  email: string;
+
+  @IsString()
+  @MaxLength(10)
+  password: string;
 }

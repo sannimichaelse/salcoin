@@ -4,7 +4,7 @@
       "es5",
       "es6",
       "es7",
-      "esnext.asynciterable"
+      "esnext.asynciterable",
     ],
     "target": "es2015",
     "module": "commonjs",

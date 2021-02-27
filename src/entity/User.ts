@@ -8,47 +8,41 @@
  *
  */
 
-import { Column, CreateDateColumn, Entity, Generated, Index, PrimaryColumn, UpdateDateColumn } from 'typeorm';
+import { Column, OneToMany, CreateDateColumn, Entity, Generated, Index,PrimaryGeneratedColumn, PrimaryColumn, UpdateDateColumn } from 'typeorm';
 import { IsDate, IsEmail, IsIn, IsInt, IsOptional, IsString, MaxLength, MinLength } from 'class-validator';
 
 import { ConstantUtil } from '../util/constants';
+import { Wallet } from './Wallet';
+import { Currencies } from './Currencies';
 
-@Entity('user')
-@Index('unq_user_email', ['email'], { unique: true })
+@Entity('users')
+@Index('uniq_user_email', ['email'], { unique: true })
 export class User {
 
-    @PrimaryColumn('bigint')
+    @PrimaryGeneratedColumn()
     @Generated()
     @IsOptional()
     id: number;
 
-    @Column({
-        length: 512
-    })
+    @Column()
     @IsString()
     @MinLength(2)
     @MaxLength(512)
     name: string;
 
-    @Column({
-        length: 1000
-    })
+    @Column()
     @IsEmail()
-    @MaxLength(1000)
+    @MaxLength(512)
     email: string;
 
-    @Column({
-        length: 10
-    })
+    @Column()
     @IsString()
-    @MaxLength(10)
+    @MaxLength(512)
     password: string;
 
-    @Column({
-        length: 1000
-    })
+    @Column()
     @IsString()
-    @MaxLength(1000)
+    @MaxLength(512)
     description: string;
 
     @Column('integer')
