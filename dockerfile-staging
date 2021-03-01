@@ -1,5 +1,5 @@
 FROM node:8.11-alpine
-LABEL maintainer="Sanni Michael Tomiwa. <albertonaperijr@gmail.com>"
+LABEL maintainer="Sanni Michael Tomiwa. <tomiwatech@gmail.com>"
 
 # Default to UTF-8 file.encoding
 ENV LANG C.UTF-8
