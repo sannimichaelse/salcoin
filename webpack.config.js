@@ -16,7 +16,7 @@ var path = require('path');
 module.exports = {
     target: 'node', // webworker | node-webkit
     entry: {
-        app: path.resolve('src/Main.ts')
+        app: path.resolve('src/main.ts')
     },
     output: {
         filename: 'main.bundle.js',

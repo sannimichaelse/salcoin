@@ -21,7 +21,6 @@ import { TransactionRequest } from '../interface/request/Transaction';
 import { CommonUtil } from '../util/common';
 import TransactionProcessor from '../service/transaction-processor';
 import walletService from './wallet-service';
-import { Wallet } from '../entity/Wallet';
 
 class TransactionService {
     /**
@@ -148,7 +147,7 @@ class TransactionService {
         transactionRequest: TransactionRequest,
         currency_id: number,
         user_id: number
-    ): Promise<void>{
+    ): Promise<void> {
 
         await TransactionProcessor.connect();
         await TransactionProcessor.addTransactionsToQueue({

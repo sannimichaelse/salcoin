@@ -76,6 +76,11 @@ export class Server {
         this.app.use(helmet());
         this.app.use(bodyParser.json()); // for parsing application/json
         this.app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
+        this.app.get('/', (req, res, next) => {
+            return res.status(200).json({
+                message: 'Welcome to Salcoin Api'
+            });
+        });
 
         return true;
     }
@@ -99,7 +104,7 @@ export class Server {
         // this.app.use(appErrorHandler);
         // this.app.use(genericErrorHandler);
 
-        // // Not found
+        // Not found
         // this.app.use(notFound);
         return true;
     }

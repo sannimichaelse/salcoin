@@ -30,6 +30,6 @@ export const createDbConnection = async function (dropSchema?: boolean) {
         entities: [
             User, Wallet, Transaction, TransactionTypes, Currencies
         ],
-        synchronize: false,
+        synchronize: true,
     });
 };
