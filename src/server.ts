@@ -20,6 +20,8 @@ import { LoggerUtil } from './util/logger';
 import { UserController } from './controller/user-controller';
 import { appErrorHandler, genericErrorHandler, notFound } from './middleware/error-middleware';
 import { WalletController } from './controller/wallet-controller';
+import { TransactionController } from './controller/transaction-controller';
+import TransactionProcessor from './service/transaction-processor';
 
 export class Server {
 
@@ -88,7 +90,8 @@ export class Server {
             routePrefix: '/api',
             controllers: [
                 UserController,
-                WalletController
+                WalletController,
+                TransactionController
             ],
         });
 
@@ -112,8 +115,9 @@ export class Server {
             port: this.PORT,
             host: 'localhost',
         });
-        this.httpServer.on('listening', () => {
+        this.httpServer.on('listening', async () => {
             LoggerUtil.info(`Server is listening on http://localhost:${this.PORT}`);
+            await TransactionProcessor.startTransactionWorker();
         });
         this.httpServer.on('error', (error: NodeJS.ErrnoException) => {
             if (error.syscall !== 'listen') {

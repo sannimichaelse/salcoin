@@ -20,8 +20,8 @@ export class WalletRepository extends Repository<Wallet> {
         return await this.save(wallet);
     }
 
-    async getUserWallet(user_id: number) {
-        const wallet = await this.findOne({user_id});
+    async getUserWallet(address: string): Promise<Wallet> {
+        const wallet = await this.findOne({address});
         if (!wallet) {
             throw new NotFoundError('Wallet not found');
         }
@@ -29,7 +29,16 @@ export class WalletRepository extends Repository<Wallet> {
         return wallet;
     }
 
-    async getWallets(user_id: number) {
+    async checkIfUserWalletExists(address: string, user_id: number): Promise<boolean> {
+        const wallet = await this.findOne({address, user_id});
+        if (!wallet) {
+            return false;
+        }
+
+        return true;
+    }
+
+    async getWallets(user_id: number): Promise<Wallet[]> {
         const wallet = await this.find({user_id});
         if (!wallet) {
             throw new NotFoundError('Wallets not found');
@@ -38,8 +47,13 @@ export class WalletRepository extends Repository<Wallet> {
         return wallet;
     }
 
-    async updateWallet(wallet: Wallet) {
-        return await this.update({ id : wallet.id }, wallet);
+    async getUserWalletByAddress(address: string, user_id: number): Promise<Wallet> {
+        const wallet = await this.findOne({address, user_id});
+        return wallet;
+    }
+
+    async updateWallet(address: string, wallet: Wallet) {
+        return await this.update({ address}, wallet);
     }
 
 

@@ -1,4 +1,4 @@
-# NodeJS TypeScript Example
+# Salcoin
 
 ## Local Setup
 

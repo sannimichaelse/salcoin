@@ -18,6 +18,8 @@ import { AllWalletResponse, WalletResponse } from '../interface/response/Wallet'
 import { Wallet } from '../entity/Wallet';
 import { WalletRequest } from '../interface/request/Wallet';
 import { CommonUtil } from '../util/common';
+import { use } from 'chai';
+import P = require('pino');
 
 class WalletService {
     /**
@@ -83,11 +85,13 @@ class WalletService {
             } else {
                 const walletIndex = userWallet.findIndex((element) => element.currency_id == currency.id);
                 if (walletIndex >= 0) {
-                    const wallet = new Wallet();
-                    wallet.balance = Number(userWallet[walletIndex].balance) + Number(walletRequest.amount);
-                    wallet.id = userWallet[walletIndex].id;
-                    await walletRepository.updateWallet(wallet);
-                    LoggerUtil.info(MethodName, 'Wallet updated successfully |', userWallet[walletIndex]);
+                    const wallet_address = userWallet[walletIndex].address;
+                    await this.updateWallet(
+                        walletRequest.amount,
+                        wallet_address,
+                        'credit'
+                    );
+
                     return {
                         message: 'Wallet updated successfully',
                         code: CodeUtil.HTTP_STATUS_CODE_OK,
@@ -109,6 +113,36 @@ class WalletService {
     }
 
     /**
+     * updateWallet
+     * @param {object} walletRepository
+     * @return {object} Promise<Wallet>
+     */
+    public async updateWallet(
+        amount: number,
+        address: string,
+        type: string
+    ): Promise <any> {
+        const walletRepository = getCustomRepository(WalletRepository);
+        const userWallet = await walletRepository.getUserWallet(address);
+        const wallet = new Wallet();
+        const MethodName = 'updateWallet | ';
+        const walletBalance = Number(userWallet.balance);
+        if (type === 'debit') {
+            const newBalance = walletBalance - amount;
+            wallet.balance = newBalance;
+        }
+
+        if (type === 'credit') {
+            const newBalance = walletBalance + amount;
+            wallet.balance = newBalance;
+        }
+
+        await walletRepository.updateWallet(address, wallet);
+        LoggerUtil.info(MethodName, 'Wallet updated successfully |', wallet);
+        return 'done';
+    }
+
+    /**
      * addWallet
      * @param {object} walletRepository
      * @return {object} Promise<Wallet>
@@ -118,7 +152,7 @@ class WalletService {
         amount: number,
         currency_id: number,
         user_id: number
-    ): Promise < Wallet > {
+    ): Promise <Wallet> {
         const wallet = new Wallet();
         wallet.address = CommonUtil.generateUUID();
         wallet.balance = amount;
@@ -128,6 +162,39 @@ class WalletService {
         wallet.currency_id = currency_id;
         const result = await walletRepository.add(wallet);
         return result;
+    }
+
+    /**
+     * addWallet
+     * @param {object} walletRepository
+     * @return {object} Promise<Wallet>
+     */
+    public async deductBalance(
+        amount: number,
+        address: string,
+        user_id: number
+    ): Promise <any> {
+        const MethodName = 'deductBalance | ';
+        const walletRepository = getCustomRepository(WalletRepository);
+        const wallet = await walletRepository.getUserWalletByAddress(address, user_id);
+        const walletBalance = Number(wallet.balance);
+
+        if (walletBalance < amount) {
+            return {
+                message: 'Insufficient funds',
+                code: CodeUtil.HTTP_STATUS_CODE_BAD_REQUEST,
+                status: 'error',
+                data: null
+            };
+        }
+
+        await this.updateWallet(
+            amount,
+            wallet.address,
+            'debit'
+        );
+
+        return wallet;
     }
 
 }

@@ -10,8 +10,8 @@
 import { IsDate, IsEmail, IsIn, IsInt, IsNumber, IsOptional, IsString, MaxLength, MinLength } from 'class-validator';
 
 export class TransactionRequest {
-  @IsInt()
-  currency_id: number;
+  @IsString()
+  currency: string;
 
   @IsNumber()
   @MaxLength(1000000000)
@@ -32,9 +32,9 @@ export class TransactionRequest {
 
   @IsString()
   @MaxLength(512)
-  name: string;
+  type: string;
 
   @IsString()
-  @MaxLength(1000)
-  description: string;
+  @MaxLength(512)
+  transaction_id: string;
 }

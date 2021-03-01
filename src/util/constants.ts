@@ -57,5 +57,9 @@ export const ConstantUtil = {
     PENDING: 'pending',
     COMPLETED: 'completed',
 
+    // Queue
+    QUEUE_URL : process.env.QUEUE_URL,
+    QUEUE_NAME: 'transactions'
+
 
 };

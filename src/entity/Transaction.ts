@@ -13,7 +13,7 @@ import { IsDate, IsIn, IsInt, IsNumber, IsString, MaxLength, MinLength } from 'c
 import { ConstantUtil } from '../util/constants';
 
 @Entity('transactions')
-@Index('uniq_type', ['type'], { unique: true })
+@Index('uniq_type', ['transaction_id'], { unique: true })
 export class Transaction {
 
     @PrimaryGeneratedColumn()
@@ -24,6 +24,11 @@ export class Transaction {
     @IsInt()
     @MinLength(1)
     currency_id: number;
+
+    @Column()
+    @IsInt()
+    @MinLength(1)
+    user_id: number;
 
     @Column({ type: 'decimal'})
     @IsNumber()
