@@ -22,10 +22,11 @@ import { appErrorHandler, genericErrorHandler, notFound } from './middleware/err
 import { WalletController } from './controller/wallet-controller';
 import { TransactionController } from './controller/transaction-controller';
 import TransactionProcessor from './service/transaction-processor';
+import config from './config/index';
 
 export class Server {
 
-    private PORT = Number(process.env.PORT) || 9001;
+    private PORT = Number(config.PORT) || 9001;
 
     // Set app to be of type express.Application
     private app: express.Application;

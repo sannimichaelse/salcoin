@@ -67,12 +67,12 @@ class TransactionService {
             const currencyRepository = getCustomRepository(CurrencyRepository);
             const walletRepository = getCustomRepository(WalletRepository);
             const currency = await currencyRepository.getCurrency(transactionRequest.currency);
+            console.log(currency);
             // Check if source and destination address is valid
             const valid_address = await this.validateWalletAddress(
                 walletRepository,
                 transactionRequest.source_address,
                 transactionRequest.destination_address,
-                user_id
             );
 
             if (!valid_address) {
@@ -189,12 +189,12 @@ class TransactionService {
         walletRepository: WalletRepository,
         source_address: string,
         destination_address: string,
-        user_id: number,
     ): Promise <boolean> {
 
-        const source_valid =  await this.findWalletAddress(walletRepository, source_address, user_id);
-        const destination_valid = await this.findWalletAddress(walletRepository, destination_address, user_id);
-
+        const source_valid =  await this.findWalletAddress(walletRepository, source_address);
+        const destination_valid = await this.findWalletAddress(walletRepository, destination_address);
+        console.log(source_valid);
+        console.log(destination_valid);
         if (!source_valid || !destination_valid) {
             return false;
         }
@@ -211,9 +211,8 @@ class TransactionService {
     private async findWalletAddress(
         walletRepository: WalletRepository,
         walletAddress: string,
-        userId: number,
     ): Promise<boolean> {
-        const result = await walletRepository.checkIfUserWalletExists(walletAddress, userId);
+        const result = await walletRepository.checkIfUserWalletExists(walletAddress);
         return result;
     }
 

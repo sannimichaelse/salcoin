@@ -29,8 +29,8 @@ export class WalletRepository extends Repository<Wallet> {
         return wallet;
     }
 
-    async checkIfUserWalletExists(address: string, user_id: number): Promise<boolean> {
-        const wallet = await this.findOne({address, user_id});
+    async checkIfUserWalletExists(address: string): Promise<boolean> {
+        const wallet = await this.findOne({address});
         if (!wallet) {
             return false;
         }
@@ -55,6 +55,5 @@ export class WalletRepository extends Repository<Wallet> {
     async updateWallet(address: string, wallet: Wallet) {
         return await this.update({ address}, wallet);
     }
-
 
 }

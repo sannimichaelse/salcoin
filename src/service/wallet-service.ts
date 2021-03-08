@@ -37,7 +37,7 @@ class WalletService {
             LoggerUtil.info(MethodName, 'User wallet fetched successfully |', CodeUtil.RETRIEVE_ACCOUNT_SUCCESS);
             return {
                 message: 'Wallet fetched successfully',
-                code: CodeUtil.HTTP_STATUS_CODE_CREATED,
+                code: CodeUtil.HTTP_STATUS_CODE_OK,
                 status: 'success',
                 data: result
             };

@@ -7,6 +7,7 @@
  * * * * * * * * * * * * * * * *
  *
  */
+import config from '../config/index';
 
 export const ConstantUtil = {
 
@@ -29,19 +30,19 @@ export const ConstantUtil = {
     USER_STATUS_SUSPENDED_STUDENT: 4,
 
     // Config
-    APP_NAME: process.env.APP_NAME,
+    APP_NAME: config.APP_NAME,
 
     // Postgres Config
-    MYSQL_HOST: process.env.MYSQL_HOST,
-    MYSQL_PORT: Number(process.env.MYSQL_PORT),
-    MYSQL_DATABASE: process.env.MYSQL_DATABASE,
-    MYSQL_USERNAME: process.env.MYSQL_USERNAME,
-    MYSQL_PASSWORD: process.env.MYSQL_PASSWORD,
+    MYSQL_HOST: config.MYSQL_HOST,
+    MYSQL_PORT: Number(config.MYSQL_PORT),
+    MYSQL_DATABASE: config.MYSQL_DATABASE,
+    MYSQL_USERNAME: config.MYSQL_USERNAME,
+    MYSQL_PASSWORD: config.MYSQL_PASSWORD,
 
     // JWT | Token Config
     PASSWORD_SALT_ROUNDS: 10,
-    JWT_AUTH_SECRET_KEY: process.env.JWT_AUTH_SECRET_KEY,
-    JWT_RESET_PASSWORD_SECRET_KEY: process.env.JWT_RESET_PASSWORD_SECRET_KEY,
+    JWT_AUTH_SECRET_KEY: config.JWT_AUTH_SECRET_KEY,
+    JWT_RESET_PASSWORD_SECRET_KEY: config.JWT_RESET_PASSWORD_SECRET_KEY,
     DEFAULT_AUTH_EXPIRATION: '1h',
     DEFAULT_EMAIL_TOKEN_EXPIRATION: null,
     DEFAULT_RESET_PASSWORD_TOKEN_EXPIRATION: null,
@@ -58,7 +59,7 @@ export const ConstantUtil = {
     COMPLETED: 'completed',
 
     // Queue
-    QUEUE_URL : process.env.QUEUE_URL,
+    QUEUE_URL : config.QUEUE_URL,
     QUEUE_NAME: 'transactions'
 
 

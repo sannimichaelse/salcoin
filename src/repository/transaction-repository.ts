@@ -29,4 +29,9 @@ export class TransactionRepository extends Repository<Transaction> {
         return transaction;
     }
 
+    async truncate() {
+        const transaction = await this.queryRunner.query('TRUNCATE TABLE transactions');
+        return transaction;
+    }
+
 }
