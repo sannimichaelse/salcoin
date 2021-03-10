@@ -6,8 +6,6 @@ import development from './env/development';
 import test from './env/test';
 import production from './env/production';
 
-console.log(process.env['NODE' + '_ENV']);
-
 const defaults = {
   root: path.normalize(`${__dirname}/..`),
 };

@@ -23,7 +23,7 @@ class UserService {
     /**
      * signup
      * @param {object} SignupRequest
-     * @return {object} UserResponse
+     * @return {Promise} Promise<UserResponse>
      */
     public async signup(userRequest: SignupRequest): Promise<UserResponse> {
         const MethodName = 'Signup |';
@@ -71,7 +71,7 @@ class UserService {
     /**
      * login
      * @param {object} LoginRequest
-     * @return {object} UserResponse
+     * @return {Promise} Promise<LoginResponse>
      */
     public async login(loginRequest: LoginRequest): Promise<LoginResponse> {
         const MethodName = 'Login |';

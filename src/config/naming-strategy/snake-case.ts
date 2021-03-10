@@ -30,7 +30,7 @@ export class SnakeNamingStrategy extends DefaultNamingStrategy implements Naming
     }
 
     joinTableName(firstTableName: string, secondTableName: string, firstPropertyName: string, secondPropertyName: string): string {
-        return snakeCase(firstTableName + '_' + firstPropertyName.replace(/\./gi, '_') + '_' + secondTableName);
+        return snakeCase(firstTableName + '_' + firstPropertyName.replace(/\./g, '_') + '_' + secondTableName);
     }
 
     joinTableColumnName(tableName: string, propertyName: string, columnName?: string): string {

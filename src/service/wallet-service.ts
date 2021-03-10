@@ -18,14 +18,13 @@ import { AllWalletResponse, WalletResponse } from '../interface/response/Wallet'
 import { Wallet } from '../entity/Wallet';
 import { WalletRequest } from '../interface/request/Wallet';
 import { CommonUtil } from '../util/common';
-import { use } from 'chai';
-import P = require('pino');
 
 class WalletService {
     /**
-     * signup
-     * @param {object} getWallet
-     * @return {object} WalletResponse
+     * getWallet
+     * @param {object} request
+     * @param {number} user_id
+     * @return {Promise} Promise<AllWalletResponse>
      */
     public async getWallet(request: WalletRequest, user_id: number): Promise <AllWalletResponse> {
         const MethodName = 'getWallet |';
@@ -56,7 +55,8 @@ class WalletService {
     /**
      * add
      * @param {object} walletRequest
-     * @return {object} WalletResponse
+     * @param {number} user_id
+     * @return {Promise} Promise<WalletResponse>
      */
     public async add(walletRequest: WalletRequest, user_id: number): Promise <WalletResponse> {
         const MethodName = 'Add |';
@@ -114,8 +114,10 @@ class WalletService {
 
     /**
      * updateWallet
-     * @param {object} walletRepository
-     * @return {object} Promise<Wallet>
+     * @param {number} amount
+     * @param {string} address
+     * @param {string} type
+     * @return {Promise} Promise<any>
      */
     public async updateWallet(
         amount: number,
@@ -145,7 +147,10 @@ class WalletService {
     /**
      * addWallet
      * @param {object} walletRepository
-     * @return {object} Promise<Wallet>
+     * @param {number} amount
+     * @param {number} currency_id
+     * @param {number} user_id
+     * @return {Promise} Promise<Wallet>
      */
     private async addWallet(
         walletRepository: WalletRepository,
@@ -165,9 +170,11 @@ class WalletService {
     }
 
     /**
-     * addWallet
-     * @param {object} walletRepository
-     * @return {object} Promise<Wallet>
+     * deductBalance
+     * @param {number} amount
+     * @param {string} address
+     * @param {number} user_id
+     * @return {Promise} Promise<any>
      */
     public async deductBalance(
         amount: number,

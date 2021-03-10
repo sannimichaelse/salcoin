@@ -26,7 +26,8 @@ class TransactionService {
     /**
      * getTransaction
      * @param {object} request
-     * @return {object} AllTransactionResponse
+     * @param {number} user_id
+     * @return {Promise} Promise<AllTransactionResponse>
      */
     public async getTransaction(request: TransactionRequest, user_id: number): Promise <AllTransactionResponse> {
         const MethodName = 'getWallet |';
@@ -57,7 +58,8 @@ class TransactionService {
     /**
      * add
      * @param {object} transactionRequest
-     * @return {object} TransactionResponse
+     * @param {number} user_id
+     * @return {Promise} Promise<TransactionResponse>
      */
     public async add(transactionRequest: TransactionRequest, user_id: number): Promise <TransactionResponse> {
         const MethodName = 'Add |';
@@ -140,8 +142,9 @@ class TransactionService {
     /**
      * queueTransactions
      * @param {object} transactionRequest
-     * @param {object} currency_id
-     * @return {object} Promise<void>
+     * @param {number} currency_id
+     * @param {number} user_id
+     * @return {Promise} Promise<void>
      */
     private async queueTransactions(
         transactionRequest: TransactionRequest,
@@ -160,8 +163,10 @@ class TransactionService {
     /**
      * checkWalletAddressBalance
      * @param {object} walletRepository
-     * @param {object} amount
-     * @return {object} Promise<boolean>
+     * @param {number} amount
+     * @param {string} address
+     * @param {number} user_id
+     * @return {Promise} Promise<boolean>
      */
     private async checkWalletAddressBalance(
         walletRepository: WalletRepository,
@@ -181,9 +186,10 @@ class TransactionService {
 
     /**
      * validateWalletAddress
-     * @param {object} source_address
-     * @param {object} destination_address
-     * @return {object} Promise<Wallet>
+     * @param {object} walletRepository
+     * @param {string} source_address
+     * @param {string} destination_address
+     * @return {object} Promise<boolean>
      */
     private async validateWalletAddress(
         walletRepository: WalletRepository,
@@ -205,8 +211,8 @@ class TransactionService {
     /**
      * findWalletAddress
      * @param {object} walletRepository
-     * @param {object} wallet_address
-     * @return {object} Promise<Wallet>
+     * @param {string} walletAddress
+     * @return {object} Promise<boolean>
      */
     private async findWalletAddress(
         walletRepository: WalletRepository,
@@ -219,7 +225,9 @@ class TransactionService {
     /**
      * addTransaction
      * @param {object} transactionRepository
-     * @return {object} Promise<Wallet>
+     * @param {number} currency_id
+     * @param {number} user_id
+     * @return {object} Promise<Transaction>
      */
     public async addTransaction(
         transactionRequest: TransactionRequest,
