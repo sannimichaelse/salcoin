@@ -9,7 +9,7 @@
  *
  */
 
-import { EntityManager, getCustomRepository, In, Transaction, TransactionManager } from 'typeorm';
+import { getCustomRepository } from 'typeorm';
 import { CodeUtil } from '../util/response-codes';
 import { ConstantUtil } from '../util/constants';
 import { LoggerUtil } from '../util/logger';
@@ -22,7 +22,7 @@ import { AuthUtil } from '../util/auth';
 class UserService {
     /**
      * signup
-     * @param {object} SignupRequest
+     * @param {SignupRequest} userRequest
      * @return {Promise} Promise<UserResponse>
      */
     public async signup(userRequest: SignupRequest): Promise<UserResponse> {
@@ -38,7 +38,6 @@ class UserService {
         user.createdAt = new Date();
         user.updatedAt = new Date();
 
-        // Create user list
         try {
             const userRepository = getCustomRepository(UserRepository);
             const result = await userRepository.createAccount(user);
@@ -70,7 +69,7 @@ class UserService {
 
     /**
      * login
-     * @param {object} LoginRequest
+     * @param {LoginRequest} loginRequest
      * @return {Promise} Promise<LoginResponse>
      */
     public async login(loginRequest: LoginRequest): Promise<LoginResponse> {

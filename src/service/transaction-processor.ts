@@ -83,6 +83,7 @@ class TransactionProccessor {
         //   | minute
         //   second ( optional )
         // Schedule tasks to be run on the server.
+        // Runs every 1minute
         cron.schedule('* * * * *', async () => {
             LoggerUtil.info('Worker running. Checking for transactions in the queue');
             this.processTransactions();

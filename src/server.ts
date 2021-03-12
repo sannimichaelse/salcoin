@@ -51,14 +51,6 @@ export class Server {
             return false;
         }
 
-        /**
-         * Populate tables | TEST DATA
-         * NOTE: Test only
-         */
-        if (process.env.ENVIRONMENT !== 'prod') {
-            // await CommonUtil.populateTables();
-        }
-
         this.app = express();
         await this.config();
         await this.routes();

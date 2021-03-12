@@ -6,25 +6,10 @@ import { WalletRepository } from '../repository/wallet-repository';
 import { UserRepository } from '../repository/user-repository';
 import { createDbConnection } from '../config/db/db-provider';
 
-// get a connection and create a new query runner
 
 
 // tslint:disable-next-line:class-name
 export default class Test {
-
-    public async setupStaticTable(): Promise<any> {
-        try {
-            await createDbConnection();
-            const transationRepository = getCustomRepository(TransactionRepository);
-            const walletRepository = getCustomRepository(WalletRepository);
-            const userRepository = getCustomRepository(UserRepository);
-            await transationRepository.clear();
-            await walletRepository.clear();
-            await userRepository.clear();
-        } catch (err) {
-            console.log(err);
-        }
-    }
 
     public async tearDown(): Promise<any> {
         try {

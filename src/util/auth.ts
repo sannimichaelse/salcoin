@@ -15,20 +15,12 @@ import { LoggerUtil } from './logger';
 
 export class AuthUtil {
 
-    // ----------------------------------------------------------------------
-    // Data retrieval section
-    // ----------------------------------------------------------------------
-
-    // ----------------------------------------------------------------------
-    // Module specific section
-    // ----------------------------------------------------------------------
-
     /**
      * Hash Password
      * @param {string} password
-     * @return {string} hashedPassword
+     * @return {any}
      */
-    public static hashPassword(password: string): string | null {
+    public static hashPassword(password: string): any {
         const MethodName = 'HashPassword |';
         LoggerUtil.info(MethodName, 'password :', password);
 
@@ -44,7 +36,7 @@ export class AuthUtil {
     }
 
     /**
-     * IsPasswordAndHashPasswordMatch
+     * comparePassword
      * @param {string} hashPassword
      * @param {string} password
      * @return {boolean}
@@ -66,7 +58,7 @@ export class AuthUtil {
     }
 
     /**
-     * Generate Auth Token
+     * generateAuthToken
      * @param {object} payload
      * @return {string} token
      */
@@ -88,9 +80,9 @@ export class AuthUtil {
     }
 
     /**
-     * Verify Token
+     * verifyToken
      * @param {string} token
-     * @return {object | null}
+     * @return {Promise<any>}
      */
     public static async verifyToken(token: string): Promise<any> {
         const secretKey = ConstantUtil.JWT_AUTH_SECRET_KEY;
@@ -102,7 +94,7 @@ export class AuthUtil {
         }
 
         return new Promise((resolve, reject) => {
-            jwt.verify(token, secretKey, (error, decoded) => {
+            jwt.verify(token, secretKey, (error: any, decoded: any) => {
                 if (error) {
                     LoggerUtil.info(MethodName, 'error :', error, '| decoded :', decoded);
                     return reject(error);
@@ -113,9 +105,5 @@ export class AuthUtil {
             });
         });
     }
-
-    // ----------------------------------------------------------------------
-    // Generic method section
-    // ----------------------------------------------------------------------
 
 }

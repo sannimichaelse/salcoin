@@ -9,7 +9,7 @@
  *
  */
 
-import { EntityManager, getCustomRepository, In, Transaction, TransactionManager } from 'typeorm';
+import { getCustomRepository } from 'typeorm';
 import { CodeUtil } from '../util/response-codes';
 import { LoggerUtil } from '../util/logger';
 import { WalletRepository } from '../repository/wallet-repository';

@@ -9,7 +9,7 @@
  *
  */
 
-import { EntityManager, getCustomRepository, In, TransactionManager } from 'typeorm';
+import { getCustomRepository } from 'typeorm';
 import { CodeUtil } from '../util/response-codes';
 import { LoggerUtil } from '../util/logger';
 import { TransactionRepository } from '../repository/transaction-repository';
@@ -25,7 +25,7 @@ import walletService from './wallet-service';
 class TransactionService {
     /**
      * getTransaction
-     * @param {object} request
+     * @param {TransactionRequest} request
      * @param {number} user_id
      * @return {Promise} Promise<AllTransactionResponse>
      */
@@ -57,7 +57,7 @@ class TransactionService {
 
     /**
      * add
-     * @param {object} transactionRequest
+     * @param {TransactionRequest} transactionRequest
      * @param {number} user_id
      * @return {Promise} Promise<TransactionResponse>
      */
@@ -69,7 +69,6 @@ class TransactionService {
             const currencyRepository = getCustomRepository(CurrencyRepository);
             const walletRepository = getCustomRepository(WalletRepository);
             const currency = await currencyRepository.getCurrency(transactionRequest.currency);
-            console.log(currency);
             // Check if source and destination address is valid
             const valid_address = await this.validateWalletAddress(
                 walletRepository,
@@ -118,7 +117,7 @@ class TransactionService {
                 user_id
             );
 
-            LoggerUtil.info(MethodName, 'Transaction has been processed |');
+            LoggerUtil.info(MethodName, 'Transaction has been processed');
             return {
                 message: 'Transaction has been processed',
                 code: CodeUtil.HTTP_STATUS_CODE_OK,
@@ -141,7 +140,7 @@ class TransactionService {
 
     /**
      * queueTransactions
-     * @param {object} transactionRequest
+     * @param {TransactionRequest} transactionRequest
      * @param {number} currency_id
      * @param {number} user_id
      * @return {Promise} Promise<void>
@@ -162,7 +161,7 @@ class TransactionService {
 
     /**
      * checkWalletAddressBalance
-     * @param {object} walletRepository
+     * @param {WalletRepository} walletRepository
      * @param {number} amount
      * @param {string} address
      * @param {number} user_id
@@ -186,10 +185,10 @@ class TransactionService {
 
     /**
      * validateWalletAddress
-     * @param {object} walletRepository
+     * @param {WalletRepository} walletRepository
      * @param {string} source_address
      * @param {string} destination_address
-     * @return {object} Promise<boolean>
+     * @return {Promise} Promise<boolean>
      */
     private async validateWalletAddress(
         walletRepository: WalletRepository,
@@ -199,8 +198,6 @@ class TransactionService {
 
         const source_valid =  await this.findWalletAddress(walletRepository, source_address);
         const destination_valid = await this.findWalletAddress(walletRepository, destination_address);
-        console.log(source_valid);
-        console.log(destination_valid);
         if (!source_valid || !destination_valid) {
             return false;
         }
@@ -210,7 +207,7 @@ class TransactionService {
 
     /**
      * findWalletAddress
-     * @param {object} walletRepository
+     * @param {WalletRepository} walletRepository
      * @param {string} walletAddress
      * @return {object} Promise<boolean>
      */
@@ -224,10 +221,10 @@ class TransactionService {
 
     /**
      * addTransaction
-     * @param {object} transactionRepository
+     * @param {TransactionRequest} transactionRepository
      * @param {number} currency_id
      * @param {number} user_id
-     * @return {object} Promise<Transaction>
+     * @return {Promise} Promise<Transaction>
      */
     public async addTransaction(
         transactionRequest: TransactionRequest,
@@ -236,7 +233,6 @@ class TransactionService {
     ): Promise <Transaction> {
         const transactionRepository = getCustomRepository(TransactionRepository);
         const transaction = new Transaction();
-        console.log(transactionRequest);
         transaction.source_address = transactionRequest.source_address;
         transaction.destination_address = transactionRequest.destination_address;
         transaction.user_id = user_id;

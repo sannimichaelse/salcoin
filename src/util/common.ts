@@ -8,19 +8,18 @@
  *
  */
 
-import { CodeUtil } from './response-codes';
-import { ConstantUtil } from './constants';
 import { LoggerUtil } from './logger';
 
 export class CommonUtil {
 
     /**
-     * toTitleCase
+     * convertToTitleCase
+     * @param {string} str
      * @return {string}
      */
     public static convertToTitleCase(str: string): string {
-        const MethodName = 'convertToTitleCase |';
-        LoggerUtil.info(MethodName);
+      const MethodName = 'convertToTitleCase |';
+      LoggerUtil.info(MethodName);
 
       return str.replace(/\w\S*/g, (txt) => (
         txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
