@@ -1,6 +1,6 @@
 /**
  *
- * User Repository
+ * CurrencyRepository
  * Create Update Delete Retrieve
  *
  * * * * * * * * * * * * * * * * *

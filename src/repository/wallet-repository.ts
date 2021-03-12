@@ -1,6 +1,6 @@
 /**
  *
- * User Repository
+ * WalletRepository
  * Create Update Delete Retrieve
  *
  * * * * * * * * * * * * * * * * *

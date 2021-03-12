@@ -1,6 +1,6 @@
 /**
  *
- * User Repository
+ * UserRepository
  * Create Update Delete Retrieve
  *
  * * * * * * * * * * * * * * * * *
