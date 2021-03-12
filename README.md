@@ -1,6 +1,6 @@
 ## SALCOIN API
 
-A simple cryptocurrency wallet that allows users to create different wallets, bitcoin, ethereum and transfer coins using a unqiue address
+A simple cryptocurrency system that allows users to create different wallets, bitcoin, ethereum and transfer coins using a unqiue address
 
 ---
 
