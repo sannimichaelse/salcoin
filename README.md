@@ -1,4 +1,4 @@
-## SALCOIN API
+## SALCOIN
 
 A simple cryptocurrency system that allows users to create different wallets, bitcoin, ethereum and transfer coins using a unqiue address
 
@@ -57,20 +57,23 @@ After installing node, this project will need yarn too, so just run the followin
 create a `.env` file then add the following values.
 
 ```
-
-NODE_ENV=
 ENVIRONMENT=
-PORT=
-SHOW_DEBUG_LOGS=
 APP_NAME=
 MYSQL_HOST=
 MYSQL_PORT=
 MYSQL_DATABASE=
 MYSQL_USERNAME=
 MYSQL_PASSWORD=
+PORT=9001
+MYSQL_TEST_HOST=
+MYSQL_TEST_PORT=
+MYSQL_TEST_DATABASE=
+MYSQL_TEST_USERNAME=
+MYSQL_TEST_PASSWORD=
+TEST_PORT=9002
 JWT_AUTH_SECRET_KEY=
 QUEUE_URL=
-
+TEST_QUEUE_URL=
 ```
 
 ## Database Setup
@@ -89,7 +92,8 @@ Make sure the typeorm cli is installed. To run migrations
 
 ## Running Tests
 
-    Start the test server - It runs on a different port 
+Start the test server - It runs on a different port - check the env.sample
+    
     $ npm run test:server 
 
     Run the tests
