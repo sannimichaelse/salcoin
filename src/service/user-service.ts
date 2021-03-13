@@ -84,7 +84,7 @@ class UserService {
             const passwordIsValid = AuthUtil.comparePassword(userPassword, dbPassword);
 
             if (!passwordIsValid) {
-                LoggerUtil.info(MethodName, 'Wrong password and email combination |', result);
+                LoggerUtil.error(MethodName, 'Wrong password and email combination |', result);
                 return {
                     message: 'Wrong password and email combination',
                     code: CodeUtil.HTTP_STATUS_CODE_NOT_FOUND,

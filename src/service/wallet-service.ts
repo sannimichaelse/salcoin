@@ -18,6 +18,8 @@ import { AllWalletResponse, WalletResponse } from '../interface/response/Wallet'
 import { Wallet } from '../entity/Wallet';
 import { WalletRequest } from '../interface/request/Wallet';
 import { CommonUtil } from '../util/common';
+import TransactionService from './transaction-service';
+import { TransactionRequest } from '../interface/request/Transaction';
 
 class WalletService {
     /**
@@ -62,12 +64,18 @@ class WalletService {
         const MethodName = 'Add |';
         LoggerUtil.info(MethodName, 'UserRequest :', walletRequest);
 
+        TransactionService.checkTransactionLimit(walletRequest.amount);
         try {
             const walletRepository = getCustomRepository(WalletRepository);
             const currencyRepository = getCustomRepository(CurrencyRepository);
             const currency = await currencyRepository.getCurrency(walletRequest.currency);
             const userWallet = await walletRepository.getWallets(user_id);
             const walletIndex = userWallet.findIndex((element) => element.currency_id == currency.id);
+           // Create Transaction Object
+            const transactionRequest = new TransactionRequest();
+            transactionRequest.amount = walletRequest.amount;
+            transactionRequest.currency = walletRequest.currency;
+            transactionRequest.type = 'fund_wallet';
             if (userWallet.length === 0 || walletIndex < 0) {
                 const result = await this.addWallet(
                     walletRepository,
@@ -75,6 +83,11 @@ class WalletService {
                     currency.id,
                     user_id,
                 );
+
+
+                transactionRequest.destination_address = result.address;
+                transactionRequest.source_address = result.address;
+                await TransactionService.add(transactionRequest, user_id);
                 LoggerUtil.info(MethodName, 'Wallet created successfully |', result);
                 return {
                     message: 'Wallet created successfully',
@@ -92,6 +105,9 @@ class WalletService {
                         'credit'
                     );
 
+                    transactionRequest.destination_address = wallet_address;
+                    transactionRequest.source_address = wallet_address;
+                    await TransactionService.add(transactionRequest, user_id);
                     return {
                         message: 'Wallet updated successfully',
                         code: CodeUtil.HTTP_STATUS_CODE_OK,

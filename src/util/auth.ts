@@ -96,7 +96,7 @@ export class AuthUtil {
         return new Promise((resolve, reject) => {
             jwt.verify(token, secretKey, (error: any, decoded: any) => {
                 if (error) {
-                    LoggerUtil.info(MethodName, 'error :', error, '| decoded :', decoded);
+                    LoggerUtil.error(MethodName, 'error :', error, '| decoded :', decoded);
                     return reject(error);
                 }
 

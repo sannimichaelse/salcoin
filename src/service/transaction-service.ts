@@ -21,6 +21,7 @@ import { TransactionRequest } from '../interface/request/Transaction';
 import { CommonUtil } from '../util/common';
 import TransactionProcessor from '../service/transaction-processor';
 import walletService from './wallet-service';
+import { ConstantUtil } from '../util/constants';
 
 class TransactionService {
     /**
@@ -65,6 +66,9 @@ class TransactionService {
         const MethodName = 'Add |';
         LoggerUtil.info(MethodName, 'UserRequest :', transactionRequest);
 
+        // Check Transaction Limit
+        this.checkTransactionLimit(transactionRequest.amount);
+
         try {
             const currencyRepository = getCustomRepository(CurrencyRepository);
             const walletRepository = getCustomRepository(WalletRepository);
@@ -85,14 +89,18 @@ class TransactionService {
                 };
             }
 
-            if (transactionRequest.source_address === transactionRequest.destination_address) {
+            // Transfer and withdrawal from source to source is not allowed
+            if (transactionRequest.type !== 'fund_wallet') {
+              if (transactionRequest.source_address === transactionRequest.destination_address) {
                 return {
                     message: 'Invalid transaction. You cant transfer or withdraw from source to source',
                     code: CodeUtil.HTTP_STATUS_CODE_BAD_REQUEST,
                     status: 'error',
                     data: null
                 };
+              }
             }
+
 
             // Check for enough balance
             const enough_source_balance = await this.checkWalletAddressBalance(
@@ -265,6 +273,24 @@ class TransactionService {
         }
 
         return result;
+    }
+
+    /**
+     * checkTransactionLimit
+     * @param {number} amount
+     * @return {any}
+     */
+    public checkTransactionLimit(amount: number): any {
+      const MethodName = 'checkTransactionLimit |';
+      if (amount > ConstantUtil.TRANSACTION_LIMIT) {
+        LoggerUtil.error(MethodName, 'amount :', amount, ' Transaction Limit Exceeded');
+        throw {
+            message: 'Transaction Limit Exceeded',
+            code: CodeUtil.HTTP_STATUS_CODE_BAD_REQUEST,
+            status: 'error',
+            data: null
+        };
+      }
     }
 
 }

@@ -2,9 +2,8 @@ import { ConstantUtil } from '../util/constants';
 import * as jwt from 'jsonwebtoken';
 import { LoggerUtil } from '../util/logger';
 import { CodeUtil } from '../util/response-codes';
-import { Request } from 'express';
 
-export function verifyToken(request, response: any, next ?: (err ?: any) => any): any {
+export function verifyToken(request: any, response: any, next ?: (err ?: any) => any): any {
     const secretKey = ConstantUtil.JWT_AUTH_SECRET_KEY;
     const MethodName = 'VerifyToken |';
     const token = request.headers['authorization'];

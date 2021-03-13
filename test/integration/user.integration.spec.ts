@@ -65,6 +65,38 @@ describe('Integration Tests', () => {
         });
     });
 
+    it('Should not login user1 with wrong email /api/auth/login', function (done) {
+      chai.request(server)
+        .post('/api/auth/login')
+        .send({
+          'password': '1234568',
+          'email': 'tomiwatsech@gmail.com',
+        })
+        .end(function(err, res) {
+        if (err) throw err;
+          expect(res.body.message).to.equal('Wrong email and password combination');
+          expect(res.body.status).to.equal('error');
+          expect(res.body.code).to.equal(404);
+          done();
+        });
+    });
+
+     it('Should not login user1 with wrong password /api/auth/login', function (done) {
+      chai.request(server)
+        .post('/api/auth/login')
+        .send({
+          'password': '1234568',
+          'email': 'tomiwatech@gmail.com',
+        })
+        .end(function(err, res) {
+        if (err) throw err;
+          expect(res.body.message).to.equal('Wrong password and email combination');
+          expect(res.body.status).to.equal('error');
+          expect(res.body.code).to.equal(404);
+          done();
+        });
+    });
+
     it('Should login user1 /api/auth/login', function (done) {
       chai.request(server)
         .post('/api/auth/login')
@@ -101,6 +133,25 @@ describe('Integration Tests', () => {
   });
 
   describe('Wallet Endpoints', () => {
+
+    it('should not create wallet if transaction limit is exceeded /api/wallet', function (done) {
+      chai.request(server)
+        .post('/api/wallet')
+        .set('Content-Type', 'application/json')
+        .set('authorization', token)
+        .send({
+            'amount': 5000000000,
+            'currency': 'ethereum'
+        })
+        .end(function(err, res) {
+        if (err) throw err;
+          expect(res.body.message).to.equal('Transaction Limit Exceeded');
+          expect(res.body.status).to.equal('error');
+          expect(res.body.code).to.equal(400);
+          done();
+        });
+    });
+
     it('create an ethereum wallet for user1 /api/wallet', function (done) {
       chai.request(server)
         .post('/api/wallet')
@@ -186,7 +237,7 @@ describe('Integration Tests', () => {
   });
 
    describe('Transaction Endpoints', () => {
-    it('create a transaction - transfer with wrong address /api/transaction', function (done) {
+    it('should not create a transaction - transfer with wrong address /api/transaction', function (done) {
       chai.request(server)
         .post('/api/transaction')
         .set('Content-Type', 'application/json')
@@ -207,7 +258,7 @@ describe('Integration Tests', () => {
         });
     });
 
-     it('create a transaction - transfer with right address but insufficient funds /api/transaction', function (done) {
+     it('should not create a transaction - transfer with right address but insufficient funds /api/transaction', function (done) {
       chai.request(server)
         .post('/api/transaction')
         .set('Content-Type', 'application/json')
@@ -228,7 +279,7 @@ describe('Integration Tests', () => {
         });
     });
 
-     it('create a transaction - transfer to same address /api/transaction', function (done) {
+     it('should not create a transaction - transfer to same address /api/transaction', function (done) {
       chai.request(server)
         .post('/api/transaction')
         .set('Content-Type', 'application/json')
@@ -249,7 +300,29 @@ describe('Integration Tests', () => {
         });
     });
 
-     it('create a transaction - transfer with right address /api/transaction', function (done) {
+    it('should not create transaction if limit is exceeded /api/transaction', function (done) {
+      chai.request(server)
+        .post('/api/transaction')
+        .set('Content-Type', 'application/json')
+        .set('authorization', token)
+        .send({
+            'amount': 2000000000,
+            'source_address': user_one_address,
+            'destination_address': user_two_address,
+            'type': 'transfer',
+            'currency': 'ethereum'
+        })
+        .end(function(err, res) {
+        if (err) throw err;
+          expect(res.body.message).to.equal('Transaction Limit Exceeded');
+          expect(res.body.status).to.equal('error');
+          expect(res.body.code).to.equal(400);
+          done();
+        });
+    });
+
+
+     it('should create a transaction - transfer with right address /api/transaction', function (done) {
       chai.request(server)
         .post('/api/transaction')
         .set('Content-Type', 'application/json')

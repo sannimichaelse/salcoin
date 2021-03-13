@@ -17,18 +17,6 @@ export const ConstantUtil = {
 
     AUTHORIZATION_HEADER_PREFIX: 'Bearer ',
 
-    STUDENT_STATUS_ACTIVE: 1,
-    STUDENT_STATUS_INACTIVE: 2,
-    // STUDENT_STATUS_SUSPENDED: 3,
-
-    USER_ACCESS_LEVEL_TEACHER: 1,
-    USER_ACCESS_LEVEL_STUDENT: 2,
-
-    USER_STATUS_ACTIVE: 1,
-    USER_STATUS_INACTIVE: 2,
-    USER_STATUS_BLOCKED: 3,
-    USER_STATUS_SUSPENDED_STUDENT: 4,
-
     // Config
     APP_NAME: config.APP_NAME,
 
@@ -60,7 +48,10 @@ export const ConstantUtil = {
 
     // Queue
     QUEUE_URL : config.QUEUE_URL,
-    QUEUE_NAME: 'transactions'
+    QUEUE_NAME: 'transactions',
+
+    // Transaction - 1B
+    TRANSACTION_LIMIT: 1000000000
 
 
 };
