@@ -96,7 +96,8 @@ Start the test server - It runs on a different port - check the env.sample
     
     $ npm run test:server 
 
-    Run the tests
+Run the tests
+    
     $ npm test 
 
 <!-- ## Running Coverage
