@@ -37,4 +37,10 @@ export class TransactionRequest {
   @IsString()
   @MaxLength(512)
   transaction_id: string;
+
+  @IsString()
+  state: string;
+
+  @IsDate()
+  processed_at: Date;
 }

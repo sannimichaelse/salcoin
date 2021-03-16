@@ -40,7 +40,9 @@ class TransactionProccessor {
     async addTransactionsToQueue(data: any) {
         const on_open = (err: any, ch: any) => {
             if (err != null) this.bail(err);
-            ch.assertQueue(this.queue_name);
+            ch.assertQueue(this.queue_name, {
+               durable: true
+            });
             ch.sendToQueue(this.queue_name, Buffer.from(JSON.stringify(data)), {
                 persistent: true
             });
@@ -53,7 +55,14 @@ class TransactionProccessor {
     async processTransactions() {
         const on_open = async (err: any, ch: any) => {
             if (err != null) this.bail(err);
-            ch.assertQueue(this.queue_name);
+            ch.assertQueue(this.queue_name, {
+               durable: true
+            });
+
+            // This tells RabbitMQ not to give more than one message to a worker at a time. Or,
+            // in other words, don't dispatch a new message to a worker until it has processed and acknowledged the previous one.
+            // Instead, it will dispatch it to the next worker that is not still busy.
+            ch.prefetch(1);
             ch.consume(this.queue_name, (msg: any) => {
                 setTimeout(async () => {
                     const MethodName = 'processTransactions | ';
@@ -67,6 +76,7 @@ class TransactionProccessor {
                     ch.ack(msg);
                 }, 3000);
             }, {
+                // Manual acknowledgement;
                 noAck: false
             });
         };

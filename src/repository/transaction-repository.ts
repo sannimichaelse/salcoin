@@ -29,6 +29,11 @@ export class TransactionRepository extends Repository<Transaction> {
         return transaction;
     }
 
+     async findTransaction(uuid: string): Promise<any> {
+        const transaction = await this.find({transaction_id: uuid});
+        return transaction;
+    }
+
      async getTransactionHistory(uuid: string) {
         const transaction = await this.find({
             where: [

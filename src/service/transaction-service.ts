@@ -190,6 +190,8 @@ class TransactionService {
     ): Promise<void> {
 
         await TransactionProcessor.connect();
+        transactionRequest.state = 'processed';
+        transactionRequest.processed_at = new Date();
         await TransactionProcessor.addTransactionsToQueue({
             request: transactionRequest,
             currency_id,
@@ -279,30 +281,40 @@ class TransactionService {
         transaction.amount = transactionRequest.amount;
         transaction.type = transactionRequest.type;
         transaction.state = 'completed';
+        transaction.processed_at = transactionRequest.processed_at;
         transaction.currency_id = currency_id;
         transaction.transaction_id = CommonUtil.generateUUID();
-        const result = await transactionRepository.add(transaction);
 
-        if (transactionRequest.type === 'withdrawal' || transactionRequest.type === 'transfer') {
-            // deduct source wallet;
-            await walletService.deductBalance(
-                transactionRequest.amount,
-                transactionRequest.source_address,
-                user_id
-            );
+        // Ensure transactions are not processed more than once by checking for duplicate transactions
+        const duplicateTransaction = await transactionRepository.findTransaction(transaction.transaction_id);
+        // If there is no duplicate transaction - move on with the operation
+        if (duplicateTransaction.length === 0) {
+            const result = await transactionRepository.add(transaction);
+
+            if (transactionRequest.type === 'withdrawal' || transactionRequest.type === 'transfer') {
+                // deduct source wallet;
+                await walletService.deductBalance(
+                    transactionRequest.amount,
+                    transactionRequest.source_address,
+                    user_id
+                );
+            }
+
+
+            if (transactionRequest.type === 'transfer') {
+                // credit destination wallet;
+                await walletService.updateWallet(
+                    transactionRequest.amount,
+                    transactionRequest.destination_address,
+                    'credit'
+                );
+            }
+
+            return result;
+        } else {
+            LoggerUtil.info('addTransaction', 'Duplicate transaction | Request ', TransactionRequest);
         }
 
-
-        if (transactionRequest.type === 'transfer') {
-            // credit destination wallet;
-            await walletService.updateWallet(
-                transactionRequest.amount,
-                transactionRequest.destination_address,
-                'credit'
-            );
-        }
-
-        return result;
     }
 
     /**

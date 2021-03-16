@@ -70,6 +70,10 @@ export class Transaction {
 
     @CreateDateColumn()
     @IsDate()
+    processed_at: Date;
+
+    @CreateDateColumn()
+    @IsDate()
     createdAt: Date;
 
     @UpdateDateColumn()
