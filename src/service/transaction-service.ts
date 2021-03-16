@@ -25,6 +25,36 @@ import { ConstantUtil } from '../util/constants';
 
 class TransactionService {
     /**
+     * getTransactionHistory
+     * @param {string} uuid
+     * @param {number} user_id
+     * @return {Promise} Promise<AllTransactionResponse>
+     */
+    public async getTransactionHistory(uuid: string, user_id: number): Promise <AllTransactionResponse> {
+        const MethodName = 'getTransactionHistory |';
+        LoggerUtil.info(MethodName, 'uuid :', uuid, ' | user_id : ', user_id);
+
+        try {
+            const transationRepository = getCustomRepository(TransactionRepository);
+            const result = await transationRepository.getTransactionHistory(uuid);
+            return {
+                message: 'Transactions fetched successfully',
+                code: CodeUtil.HTTP_STATUS_CODE_OK,
+                status: 'success',
+                data: result
+            };
+        } catch (error) {
+            LoggerUtil.error(MethodName, 'Error fetching transactions |  :', error.message, '|', CodeUtil.RETRIEVE_ACCOUNT_ERROR);
+            const message = error.message;
+            return {
+                message: message || 'Error fetching transactions',
+                code: CodeUtil.HTTP_STATUS_CODE_INTERNAL_SERVER_ERROR,
+                status: 'error',
+                data: error
+            };
+        }
+    }
+    /**
      * getTransaction
      * @param {TransactionRequest} request
      * @param {number} user_id
@@ -40,7 +70,7 @@ class TransactionService {
             LoggerUtil.info(MethodName, 'User transactions fetched successfully |', CodeUtil.RETRIEVE_ACCOUNT_SUCCESS);
             return {
                 message: 'Transactions fetched successfully',
-                code: CodeUtil.HTTP_STATUS_CODE_CREATED,
+                code: CodeUtil.HTTP_STATUS_CODE_OK,
                 status: 'success',
                 data: result
             };

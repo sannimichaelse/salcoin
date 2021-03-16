@@ -321,8 +321,7 @@ describe('Integration Tests', () => {
         });
     });
 
-
-     it('should create a transaction - transfer with right address /api/transaction', function (done) {
+    it('should create a transaction - transfer with right address /api/transaction', function (done) {
       chai.request(server)
         .post('/api/transaction')
         .set('Content-Type', 'application/json')
@@ -337,6 +336,32 @@ describe('Integration Tests', () => {
         .end(function(err, res) {
         if (err) throw err;
           expect(res.body.message).to.equal('Transaction has been processed');
+          expect(res.body.status).to.equal('success');
+          expect(res.body.code).to.equal(200);
+          done();
+        });
+    });
+
+    it('should get all users transaction - /api/transaction', function (done) {
+      chai.request(server)
+        .get('/api/transaction')
+        .set('Content-Type', 'application/json')
+        .set('authorization', token)
+        .end(function(err, res) {
+        if (err) throw err;
+          expect(res.body.status).to.equal('success');
+          expect(res.body.code).to.equal(200);
+          done();
+        });
+    });
+
+     it('should get transaction history - /api/transaction/history', function (done) {
+      chai.request(server)
+        .get(`/api/transaction/history/${user_one_address}`)
+        .set('Content-Type', 'application/json')
+        .set('authorization', token)
+        .end(function(err, res) {
+        if (err) throw err;
           expect(res.body.status).to.equal('success');
           expect(res.body.code).to.equal(200);
           done();

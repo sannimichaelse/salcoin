@@ -15,7 +15,7 @@ import { Response } from 'express';
 import { verifyToken } from '../middleware/auth.middleware';
 import { CurrentUser } from '../decorator/current-user';
 import { Token } from '../interface/request/Token';
-import { validateTransactionMiddleware } from '../middleware/transaction-middleware';
+import { validateTransactionMiddleware, validateUUID } from '../middleware/transaction-middleware';
 import { TransactionRequest } from '../interface/request/Transaction';
 
 @JsonController('/transaction')
@@ -27,7 +27,7 @@ export class TransactionController {
     @UseBefore(validateTransactionMiddleware)
     @UseBefore(verifyToken)
     @ContentType('application/json')
-    async addWallet(
+    async addTransaction(
         @CurrentUser() currentUser: Token,
         @Body() request: TransactionRequest,
         @Res() response: Response
@@ -40,13 +40,27 @@ export class TransactionController {
     @Get('')
     @UseBefore(verifyToken)
     @ContentType('application/json')
-    async getWallet(
+    async getTransaction(
         @CurrentUser() currentUser: Token,
         @Body() request: TransactionRequest,
         @Res() response: Response
     ) {
         const user_id = currentUser.id;
         const result = await this.transactionService.getTransaction(request, user_id);
+        return response.status(result.code).json(result);
+    }
+
+    @Get('/history/:uuid')
+    @UseBefore(verifyToken)
+    @UseBefore(validateUUID)
+    @ContentType('application/json')
+    async getTransactionHistory(
+        @CurrentUser() currentUser: Token,
+        @Param('uuid') uuid: string,
+        @Res() response: Response
+    ) {
+        const user_id = currentUser.id;
+        const result = await this.transactionService.getTransactionHistory(uuid, user_id);
         return response.status(result.code).json(result);
     }
 }

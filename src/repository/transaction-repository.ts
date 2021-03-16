@@ -28,4 +28,18 @@ export class TransactionRepository extends Repository<Transaction> {
 
         return transaction;
     }
+
+     async getTransactionHistory(uuid: string) {
+        const transaction = await this.find({
+            where: [
+                { source_address: uuid },
+                { destination_address: uuid }
+            ]
+        });
+        if (!transaction) {
+            throw new NotFoundError('Transaction not found');
+        }
+
+        return transaction;
+    }
 }
