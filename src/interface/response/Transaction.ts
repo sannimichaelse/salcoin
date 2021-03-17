@@ -9,7 +9,7 @@
  */
 
 import { Transaction } from '../../entity/Transaction';
-import { Response } from './Index';
+import { Response } from '.';
 
 export interface AllTransactionResponse extends Response {
     data?: Transaction[];
