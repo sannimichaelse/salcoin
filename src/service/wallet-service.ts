@@ -203,6 +203,7 @@ class WalletService {
         const walletBalance = Number(wallet.balance);
 
         if (walletBalance < amount) {
+            LoggerUtil.error(MethodName, 'Insufficient funds');
             return {
                 message: 'Insufficient funds',
                 code: CodeUtil.HTTP_STATUS_CODE_BAD_REQUEST,
