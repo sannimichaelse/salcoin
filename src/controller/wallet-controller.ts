@@ -1,6 +1,6 @@
 /**
  *
- * UserController
+ * WalletController
  * Create Update Delete Retrieve
  *
  * * * * * * * * * * * * * * * * *

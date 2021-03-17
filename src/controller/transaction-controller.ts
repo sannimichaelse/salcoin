@@ -1,6 +1,6 @@
 /**
  *
- * UserController
+ * TransactionController
  * Create Update Delete Retrieve
  *
  * * * * * * * * * * * * * * * * *
@@ -9,7 +9,7 @@
  *
  */
 
-import { Body, BodyParam, ContentType, Get, JsonController, Param, Post, Put, Res, UseBefore } from 'routing-controllers';
+import { Body, ContentType, Get, JsonController, Param, Post, Res, UseBefore } from 'routing-controllers';
 import TransactionService from '../service/transaction-service';
 import { Response } from 'express';
 import { verifyToken } from '../middleware/auth.middleware';

@@ -249,7 +249,7 @@ class TransactionService {
      * findWalletAddress
      * @param {WalletRepository} walletRepository
      * @param {string} walletAddress
-     * @return {object} Promise<boolean>
+     * @return {Promise} Promise<boolean>
      */
     private async findWalletAddress(
         walletRepository: WalletRepository,
